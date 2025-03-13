@@ -1,0 +1,46 @@
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+
+# Parameter distribusi normal
+mu = 5  # Rata-rata waktu pengiriman (hari)
+sigma = 2  # Standar deviasi waktu pengiriman (hari)
+
+# Menghitung probabilitas P(X < 3)
+prob_less_than_3 = stats.norm.cdf(3, mu, sigma)
+
+# Menghitung probabilitas P(4 ≤ X ≤ 7)
+prob_between_4_and_7 = stats.norm.cdf(7, mu, sigma) - stats.norm.cdf(4, mu, sigma)
+
+# Menampilkan hasil perhitungan
+print(f"Probabilitas pengiriman kurang dari 3 hari: {prob_less_than_3:.4f} atau {prob_less_than_3 * 100:.2f}%")
+print(f"Probabilitas pengiriman antara 4 dan 7 hari: {prob_between_4_and_7:.4f} atau {prob_between_4_and_7 * 100:.2f}%")
+
+# Visualisasi Distribusi Normal
+x = np.linspace(mu - 4*sigma, mu + 4*sigma, 1000)
+pdf = stats.norm.pdf(x, mu, sigma)
+
+plt.figure(figsize=(12, 6))
+plt.plot(x, pdf, label="Distribusi Normal", color='blue')
+plt.fill_between(x, pdf, where=(x < 3), color='red', alpha=0.5, label="P(X < 3)")
+plt.fill_between(x, pdf, where=((x >= 4) & (x <= 7)), color='green', alpha=0.5, label="P(4 ≤ X ≤ 7)")
+plt.axvline(mu, color='black', linestyle='dashed', label="Mean (5 hari)")
+plt.title("Distribusi Waktu Pengiriman Paket")
+plt.xlabel("Waktu Pengiriman (hari)")
+plt.ylabel("Probabilitas")
+plt.legend()
+plt.show()
+
+# Visualisasi Fungsi Distribusi Kumulatif (CDF)
+cdf = stats.norm.cdf(x, mu, sigma)
+
+plt.figure(figsize=(12, 6))
+plt.plot(x, cdf, label="Fungsi Distribusi Kumulatif", color='blue')
+plt.axvline(3, color='red', linestyle='dashed', label="P(X < 3)")
+plt.axvline(4, color='green', linestyle='dashed', label="P(4 ≤ X ≤ 7)")
+plt.axvline(7, color='green', linestyle='dashed')
+plt.title("Fungsi Distribusi Kumulatif (CDF)")
+plt.xlabel("Waktu Pengiriman (hari)")
+plt.ylabel("Probabilitas Kumulatif")
+plt.legend()
+plt.show()
